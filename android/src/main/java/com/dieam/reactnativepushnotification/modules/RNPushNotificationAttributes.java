@@ -16,6 +16,8 @@ public class RNPushNotificationAttributes {
     private static final String ID = "id";
     private static final String MESSAGE = "message";
     private static final String FIRE_DATE = "fireDate";
+    private static final String START_TIME_OF_DAY = "startTimeOfDay";
+    private static final String END_TIME_OF_DAY = "endTimeOfDay";
     private static final String TITLE = "title";
     private static final String TICKER = "ticker";
     private static final String AUTO_CANCEL = "autoCancel";
@@ -40,6 +42,8 @@ public class RNPushNotificationAttributes {
     private final String id;
     private final String message;
     private final double fireDate;
+    private final double startTimeOfDay;
+    private final double endTimeOfDay;
     private final String title;
     private final String ticker;
     private final boolean autoCancel;
@@ -65,6 +69,8 @@ public class RNPushNotificationAttributes {
         id = bundle.getString(ID);
         message = bundle.getString(MESSAGE);
         fireDate = bundle.getDouble(FIRE_DATE);
+        startTimeOfDay = bundle.getDouble(START_TIME_OF_DAY);
+        endTimeOfDay = bundle.getDouble(END_TIME_OF_DAY);
         title = bundle.getString(TITLE);
         ticker = bundle.getString(TICKER);
         autoCancel = bundle.getBoolean(AUTO_CANCEL);
@@ -92,6 +98,8 @@ public class RNPushNotificationAttributes {
             id = jsonObject.has(ID) ? jsonObject.getString(ID) : null;
             message = jsonObject.has(MESSAGE) ? jsonObject.getString(MESSAGE) : null;
             fireDate = jsonObject.has(FIRE_DATE) ? jsonObject.getDouble(FIRE_DATE) : 0.0;
+            startTimeOfDay = jsonObject.has(START_TIME_OF_DAY) ? jsonObject.getDouble(START_TIME_OF_DAY) : 0.0;
+            endTimeOfDay = jsonObject.has(END_TIME_OF_DAY) ? jsonObject.getDouble(END_TIME_OF_DAY) : 0.0;
             title = jsonObject.has(TITLE) ? jsonObject.getString(TITLE) : null;
             ticker = jsonObject.has(TICKER) ? jsonObject.getString(TICKER) : null;
             autoCancel = jsonObject.has(AUTO_CANCEL) ? jsonObject.getBoolean(AUTO_CANCEL) : true;
@@ -177,6 +185,8 @@ public class RNPushNotificationAttributes {
         bundle.putString(ID, id);
         bundle.putString(MESSAGE, message);
         bundle.putDouble(FIRE_DATE, fireDate);
+        bundle.putDouble(START_TIME_OF_DAY, startTimeOfDay);
+        bundle.putDouble(END_TIME_OF_DAY, endTimeOfDay);
         bundle.putString(TITLE, title);
         bundle.putString(TICKER, ticker);
         bundle.putBoolean(AUTO_CANCEL, autoCancel);
@@ -206,6 +216,8 @@ public class RNPushNotificationAttributes {
             jsonObject.put(ID, id);
             jsonObject.put(MESSAGE, message);
             jsonObject.put(FIRE_DATE, fireDate);
+            jsonObject.put(START_TIME_OF_DAY, startTimeOfDay);
+            jsonObject.put(END_TIME_OF_DAY, endTimeOfDay);
             jsonObject.put(TITLE, title);
             jsonObject.put(TICKER, ticker);
             jsonObject.put(AUTO_CANCEL, autoCancel);
@@ -241,6 +253,8 @@ public class RNPushNotificationAttributes {
                 "id='" + id + '\'' +
                 ", message='" + message + '\'' +
                 ", fireDate=" + fireDate +
+                ", startTimeOfDay=" + startTimeOfDay +
+                ", endTimeOfDay=" + endTimeOfDay +
                 ", title='" + title + '\'' +
                 ", ticker='" + ticker + '\'' +
                 ", autoCancel=" + autoCancel +

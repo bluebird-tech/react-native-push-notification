@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import java.util.Date;
 
 import com.facebook.react.bridge.ReadableMap;
 
@@ -126,6 +127,35 @@ public class RNPushNotificationHelper {
         } else {
             getAlarmManager().set(AlarmManager.RTC_WAKEUP, fireDate, pendingIntent);
         }
+    }
+
+    private boolean inInterval(Bundle bundle) {
+        long currentTime = System.currentTimeMillis();
+
+        if (!bundle.containsKey("startTimeOfDay") || !bundle.containsKey("endTimeOfDay")) {
+
+            Log.d(LOG_TAG, "bundle does not contain {start,end}TimeOfDay");
+            return true;
+        }
+
+        Date start = new Date((long) bundle.getDouble("startTimeOfDay"));
+        Date end = new Date((long) bundle.getDouble("endTimeOfDay"));
+
+        Date startTimeOfDay = new Date();
+        startTimeOfDay.setHours(start.getHours());
+        startTimeOfDay.setMinutes(start.getMinutes());
+
+        Date endTimeOfDay = new Date();
+        endTimeOfDay.setHours(end.getHours());
+        endTimeOfDay.setMinutes(end.getMinutes());
+
+        if ((startTimeOfDay.getTime() <= currentTime) && (currentTime <= endTimeOfDay.getTime())) {
+            Log.d(LOG_TAG, "current time in time of day range");
+            return true;
+        }
+
+        Log.d(LOG_TAG, "current time not in time of day range");
+        return false;
     }
 
     public void sendToNotificationCentre(Bundle bundle) {
@@ -331,11 +361,13 @@ public class RNPushNotificationHelper {
             Notification info = notification.build();
             info.defaults |= Notification.DEFAULT_LIGHTS;
 
-            if (bundle.containsKey("tag")) {
-                String tag = bundle.getString("tag");
-                notificationManager.notify(tag, notificationID, info);
-            } else {
-                notificationManager.notify(notificationID, info);
+            if (inInterval(bundle)) {
+                if (bundle.containsKey("tag")) {
+                    String tag = bundle.getString("tag");
+                    notificationManager.notify(tag, notificationID, info);
+                } else {
+                    notificationManager.notify(notificationID, info);
+                }
             }
 
             // Can't use setRepeating for recurring notifications because setRepeating
